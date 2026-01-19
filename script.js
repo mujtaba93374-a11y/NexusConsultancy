@@ -1,87 +1,58 @@
-// Hamburger Menu Toggle
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
+const hamburger = document.getElementById("hamburger");
+const mobileNav = document.getElementById("mobileNav");
 
-hamburger.addEventListener('click', () => {
-  navLinks.classList.toggle('active');
+// Toggle menu
+hamburger.addEventListener("click", () => {
+  mobileNav.classList.toggle("active");
 });
 
-// Hero Background Slideshow
-const hero = document.querySelector('.hero');
-const heroImages = ["image1.jpg", "image2.jpg", "image3.jpg"];
-let currentHero = 0;
+// Close menu when link clicked
+document.querySelectorAll(".mobile-nav a").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileNav.classList.remove("active");
+  });
+});
 
-function changeHeroImage() {
-  hero.style.backgroundImage = `url('${heroImages[currentHero]}')`;
-  currentHero = (currentHero + 1) % heroImages.length;
-  let interval = currentHero === 0 ? 5000 : currentHero === 1 ? 6000 : 5000; // 5s, 6s, 5s
-  setTimeout(changeHeroImage, interval);
+/* HERO SLIDER */
+const slides = document.querySelectorAll(".hero-slide");
+let current = 0;
+
+function slider() {
+  slides.forEach(s => s.classList.remove("active"));
+  slides[current].classList.add("active");
+  current = (current + 1) % slides.length;
+  setTimeout(slider, 5000);
 }
-changeHeroImage();
+slider();
 
-// Typewriter Effect
-const typewriter = document.getElementById('typewriter');
+/* TYPEWRITER */
+const text = document.getElementById("typewriter");
 const messages = [
-  "Providing admissions in Paramedical",
-  "Providing admissions in Medical",
-  "BCA, MCA, MBBS courses"
+  "Medical Admissions in India",
+  "Paramedical Admissions",
+  "MBBS Abroad Guidance"
 ];
-let msgIndex = 0;
-let charIndex = 0;
-let typing = true;
+
+let i = 0, j = 0, typing = true;
 
 function type() {
   if (typing) {
-    if (charIndex < messages[msgIndex].length) {
-      typewriter.textContent += messages[msgIndex][charIndex];
-      charIndex++;
-      setTimeout(type, 100);
+    if (j < messages[i].length) {
+      text.textContent += messages[i][j++];
+      setTimeout(type, 80);
     } else {
       typing = false;
-      setTimeout(type, 1500); // wait before deleting
+      setTimeout(type, 1400);
     }
   } else {
-    if (charIndex > 0) {
-      typewriter.textContent = messages[msgIndex].substring(0, charIndex - 1);
-      charIndex--;
-      setTimeout(type, 50);
+    if (j > 0) {
+      text.textContent = messages[i].substring(0, --j);
+      setTimeout(type, 40);
     } else {
       typing = true;
-      msgIndex = (msgIndex + 1) % messages.length;
-      setTimeout(type, 500);
+      i = (i + 1) % messages.length;
+      setTimeout(type, 300);
     }
   }
 }
 type();
-
-// Optional: Auto-scroll Testimonials
-const testimonialSlider = document.querySelector('.testimonial-slider');
-let scrollAmount = 0;
-function autoScrollTestimonials() {
-  if(testimonialSlider.scrollWidth - testimonialSlider.clientWidth <= scrollAmount) {
-    scrollAmount = 0;
-  } else {
-    scrollAmount += 1; // scroll speed
-  }
-  testimonialSlider.scrollTo({left: scrollAmount, behavior: 'smooth'});
-}
-setInterval(autoScrollTestimonials, 50);
-// Hero Slideshow (fade in/out)
-const heroSlides = document.querySelectorAll('.hero-slide');
-let currentSlide = 0;
-
-function showSlide() {
-  heroSlides.forEach((slide, index) => {
-    slide.classList.remove('active');
-    if(index === currentSlide) slide.classList.add('active');
-  });
-
-  // Custom display duration per image
-  let interval = currentSlide === 0 ? 5000 :
-                 currentSlide === 1 ? 6000 : 5000;
-
-  currentSlide = (currentSlide + 1) % heroSlides.length;
-  setTimeout(showSlide, interval);
-}
-
-showSlide();
